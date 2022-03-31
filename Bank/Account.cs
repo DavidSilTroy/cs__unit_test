@@ -4,23 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class Account
+namespace Bank
 {
-    private double balance = 0;
+    public class BalanceInsufficientException: ApplicationException { }
+    public class Account
+    {
+        private double balance = 0;
 
-    public void Credit(double amount)
-    {
-        balance += amount;
-    }
-    public void Debit(double amount)
-    {
-        if(balance > amount)
+        public void Credit(double amount)
         {
+            if (amount < 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            balance += amount;
+        }
+        public void Debit(double amount)
+        {
+            if(balance < amount)
+            {
+                throw new BalanceInsufficientException();
+            }
             balance -= amount;
         }
+        public double Blance
+        {
+            get { return balance; }
+        }
     }
-    public double Blance
-    {
-        get { return balance; }
-    }
+
 }
